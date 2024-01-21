@@ -1,0 +1,32 @@
+import { WsTransport } from "@ndn/ws-transport";
+import { Data, Interest, Name } from "@ndn/packet";
+import { fromUtf8, toUtf8 } from "@ndn/util";
+import { Endpoint } from "@ndn/endpoint";
+import { openUplinks } from "@ndn/cli-common";
+import { retrieveMetadata, isDiscoveryInterest } from "@ndn/rdr";
+import { fetch } from "@ndn/segmented-object";
+import { FileMetadata } from "@ndn/fileserver";
+await openUplinks();
+
+const endpoint = new Endpoint();
+
+endpoint.produce("/next", async function (interest) {
+  return new Data(interest.name, Data.FreshnessPeriod(1000), toUtf8("Hello"));
+});
+async function connection() {
+  //   const socket = await WsTransport.createFace({}, "ws://172.24.68.2:9696/ws");
+  const interest = new Interest(
+    new Name("/test/text.txt"),
+    Interest.MustBeFresh
+  );
+  const metadata = await retrieveMetadata(interest.name, FileMetadata, {
+    endpoint,
+    retx: 100,
+  });
+  //   const consume = await endpoint.consume(interest.name, { retx: 100 });
+  //   console.log(consume);
+  const payload = await fetch(metadata.name);
+
+  console.log(fromUtf8(payload));
+}
+connection();

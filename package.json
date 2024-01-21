@@ -1,0 +1,29 @@
+{
+  "name": "ndn-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ndn/autoconfig": "https://ndnts-nightly.ndn.today/autoconfig.tgz",
+    "@ndn/cli-common": "https://ndnts-nightly.ndn.today/cli-common.tgz",
+    "@ndn/endpoint": "https://ndnts-nightly.ndn.today/endpoint.tgz",
+    "@ndn/fileserver": "https://ndnts-nightly.ndn.today/fileserver.tgz",
+    "@ndn/packet": "https://ndnts-nightly.ndn.today/packet.tgz",
+    "@ndn/rdr": "https://ndnts-nightly.ndn.today/rdr.tgz",
+    "@ndn/repo": "https://ndnts-nightly.ndn.today/repo.tgz",
+    "@ndn/segmented-object": "https://ndnts-nightly.ndn.today/segmented-object.tgz",
+    "@ndn/tlv": "https://ndnts-nightly.ndn.today/tlv.tgz",
+    "@ndn/util": "https://ndnts-nightly.ndn.today/util.tgz",
+    "@ndn/ws-transport": "https://ndnts-nightly.ndn.today/ws-transport.tgz",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "leveldown": "^6.1.1"
+  }
+}
