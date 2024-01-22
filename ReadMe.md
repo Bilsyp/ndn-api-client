@@ -19,7 +19,7 @@ Program ini diharapkan dijalankan di sistem operasi Linux atau WSL (Windows Subs
 ### Clone Repository
 
 ```bash
-git clone https://github.com/Bilsyp/NDN-Server
+git clone https://github.com/Bilsyp/ndn-api-client.git
 ```
 
 ### Install Dependensi
