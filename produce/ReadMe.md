@@ -3,6 +3,8 @@
 Kelemahan : overwrite terjadi ketika setiap kali ada penambahan data baru, produksi ulang **instance** dilakukan pada setiap **instance** yang telah berjalan sebelumnya, menyebabkan perubahan yang tidak pasti pada faceId. Meskipun faceId berubah, kontennya tetap tidak berubah.
 
 ```javascript
+//  ? Bekerja tapi ada sedikit bug pada saat pembuatan prefix name
+
 fs.readFile("../content/content.json", "utf-8", async (err, data) => {
   const content = JSON.parse(data);
   content.forEach(async (item) => {

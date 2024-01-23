@@ -1,4 +1,7 @@
 import fs from "node:fs/promises"; // Menggunakan fs.promises untuk operasi file async
+import { storage } from "../store/store.js";
+import { Data, Name } from "@ndn/packet";
+import { toUtf8 } from "@ndn/util";
 
 export async function getData() {
   try {
@@ -10,9 +13,15 @@ export async function getData() {
   }
 }
 
-export async function updateData(data) {
+export async function updateData(prefix, content) {
   try {
-    await fs.writeFile("./content/content.json", JSON.stringify(data), "utf-8");
+    // await fs.writeFile("./content/content.json", JSON.stringify(data), "utf-8");
+    const data = new Data(
+      new Name(prefix),
+      Data.FreshnessPeriod(5000),
+      toUtf8(content)
+    );
+    await storage(data);
     console.log("Berhasil update");
   } catch (error) {
     console.error("Gagal menulis ke file:", error);

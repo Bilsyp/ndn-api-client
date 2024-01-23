@@ -8,7 +8,7 @@ import { enableNfdPrefixReg } from "@ndn/nfdmgmt";
 import { UnixTransport } from "@ndn/node-transport";
 import fs from "node:fs";
 import { checkData } from "../consume/consume.js";
-class Produce {
+export class Produce {
   constructor(name, content) {
     this.uri = new Interest(new Name(name));
     this.content = content;
@@ -37,7 +37,10 @@ class Produce {
     );
   }
 }
-// const content = await getData();
+
+// ! Tidak Bekerja
+
+//  const content = await getData();
 // content.forEach(async (item) => {
 //   const check = await checkData(item.prefix);
 //   if (!check) {
@@ -48,16 +51,19 @@ class Produce {
 //     console.log(" route");
 //   }
 // });
-fs.readFile("../content/content.json", "utf-8", async (err, data) => {
-  const content = JSON.parse(data);
-  content.forEach(async (item) => {
-    const check = await checkData(item.prefix);
-    if (!check) {
-      const data = new Produce(item.prefix, item.content);
-      await data.produces(item.prefix);
-      console.log(" route");
-    } else {
-      console.log(" route");
-    }
-  });
-});
+
+//  ? Bekerja tapi ada sedikit bug pada saat pembuatan prefix name
+
+// fs.readFile("../content/content.json", "utf-8", async (err, data) => {
+//   const content = JSON.parse(data);
+//   content.forEach(async (item) => {
+//     const check = await checkData(item.prefix);
+//     if (!check) {
+//       const data = new Produce(item.prefix, item.content);
+//       await data.produces(item.prefix);
+//       console.log(" route");
+//     } else {
+//       console.log(" route");
+//     }
+//   });
+// });
