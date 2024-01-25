@@ -8,7 +8,7 @@
 
 - NDNTS (Library Named Data Network)
 
-Dalam konteks teknis, klien akan mengirimkan permintaan ke server melalui API untuk membuat, menghapus, atau memperbarui prefix name. API hanya dapat diakses dari sisi klien, memungkinkan komunikasi satu arah dari klien ke server. Pengiriman data tetap menggunakan **NDN** dari server ke klien.
+Dalam konteks teknis, klien akan mengirimkan permintaan ke server melalui API untuk membuat dan menghapus prefix name. API hanya dapat diakses dari sisi klien, memungkinkan komunikasi satu arah dari klien ke server. Pengiriman data tetap menggunakan **NDN** dari server ke klien.
 
 ## Required
 

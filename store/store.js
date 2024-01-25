@@ -1,27 +1,70 @@
+import { openUplinks } from "@ndn/cli-common";
+import { Data, Interest, Name } from "@ndn/packet";
 import {
-  DataStore,
   RepoProducer,
+  DataStore,
   PrefixRegShorter,
   respondRdr,
 } from "@ndn/repo";
+import { delay, toUtf8 } from "@ndn/util";
 import leveldown from "leveldown";
-import { generateSigningKey } from "@ndn/keychain";
-import { enableNfdPrefixReg } from "@ndn/nfdmgmt";
-import { UnixTransport } from "@ndn/node-transport";
-import { openUplinks } from "@ndn/cli-common";
-import { Endpoint } from "@ndn/endpoint";
-import { Forwarder } from "@ndn/fw";
 await openUplinks();
-// const repo = RepoProducer.create(
-//   store,
-//   {
-//     fallback: respondRdr({}),
-//   },
-//   PrefixRegShorter(1)
-// );
-const store = new DataStore(leveldown("./cs"));
 
-export async function storage(data) {
-  await store.insert(data);
+export class Produce {
+  constructor(name, content) {
+    this.named = new Name(`/${name}`);
+    this.content = content;
+  }
+  static async makeDataStore() {
+    const store = new DataStore(leveldown("./cs"));
+
+    return store;
+  }
+  static async repoProducer() {
+    const store = await Produce.makeDataStore();
+    const producer = RepoProducer.create(store, {
+      describe: "Just Test Implementasi",
+      reg: PrefixRegShorter(1),
+      fallback: respondRdr(),
+    });
+    return {
+      store,
+      producer,
+      async close() {
+        try {
+          await store.close();
+          producer.close();
+        } catch {}
+      },
+    };
+  }
+  async insertData() {
+    const { producer, store } = await Produce.repoProducer();
+    const data = new Data(this.named);
+    data.content = toUtf8(this.content);
+    await store.insert(data);
+    await delay(1000);
+    producer.close();
+    store.close();
+  }
+  async getData() {
+    const { store } = await Produce.repoProducer();
+    const data = await store.find(
+      new Interest(this.named, Interest.MustBeFresh)
+    );
+    await store.close();
+    return data.content;
+  }
+
+  async deleteData() {
+    try {
+      const { store } = await Produce.repoProducer();
+      await store.delete(this.named);
+      await delay(1000);
+      await store.close();
+      return "Deleted";
+    } catch (error) {
+      return error;
+    }
+  }
 }
-const repo = RepoProducer.create(store, PrefixRegShorter(1));
